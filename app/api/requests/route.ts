@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Pool } from 'pg'
 
-// API finale - version robuste
+// API finale - version robuste - FORCE UPDATE v2
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
