@@ -1,7 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { Pool } from 'pg'
 
-const prisma = new PrismaClient()
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+  max: 1,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+})
 
 export async function POST(request: NextRequest) {
   try {
@@ -11,26 +17,23 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Champs requis manquants' }, { status: 400 })
     }
     
-    const result = await prisma.removalRequest.create({
-      data: {
-        firstName: String(data.first_name),
-        lastName: String(data.last_name),
-        email: String(data.email),
-        phone: String(data.phone),
-        vehicleBrand: String(data.vehicle_brand || ''),
-        vehicleModel: String(data.vehicle_model || ''),
-        vehicleYear: data.vehicle_year ? Number(data.vehicle_year) : null,
-        licensePlate: data.license_plate || null,
-        vehicleCondition: String(data.vehicle_condition || 'autre'),
-        address: String(data.address || ''),
-        city: String(data.city || ''),
-        postalCode: String(data.postal_code || ''),
-        additionalInfo: data.additional_info || null,
-        photoUrls: Array.isArray(data.photo_urls) ? data.photo_urls : [],
-      }
-    })
+    const result = await pool.query(`
+      INSERT INTO removal_requests (
+        first_name, last_name, email, phone,
+        vehicle_brand, vehicle_model, vehicle_year, license_plate, vehicle_condition,
+        address, city, postal_code, additional_info, photo_urls
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+      RETURNING id
+    `, [
+      data.first_name, data.last_name, data.email, data.phone,
+      data.vehicle_brand || '', data.vehicle_model || '', 
+      data.vehicle_year || null, data.license_plate || null, 
+      data.vehicle_condition || 'autre',
+      data.address || '', data.city || '', data.postal_code || '',
+      data.additional_info || null, JSON.stringify(data.photo_urls || [])
+    ])
     
-    return NextResponse.json({ success: true, id: result.id })
+    return NextResponse.json({ success: true, id: result.rows[0].id })
     
   } catch (error) {
     console.error('API Error:', error)
