@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model RemovalRequest {
+  id               String    @id @default(uuid())
+  firstName        String    @map("first_name")
+  lastName         String    @map("last_name")
+  email            String
+  phone            String
+  vehicleBrand     String    @map("vehicle_brand")
+  vehicleModel     String    @map("vehicle_model")
+  vehicleYear      Int?      @map("vehicle_year")
+  licensePlate     String?   @map("license_plate")
+  vehicleCondition String    @map("vehicle_condition")
+  address          String
+  city             String
+  postalCode       String    @map("postal_code")
+  additionalInfo   String?   @map("additional_info")
+  photoUrls        String[]  @map("photo_urls")
+  status           String    @default("pending")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@map("removal_requests")
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  firstName String   @map("first_name")
+  lastName  String   @map("last_name")
+  email     String
+  phone     String?
+  subject   String
+  message   String
+  status    String   @default("unread")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("contact_messages")
+}
+
+model AdminUser {
+  id         String    @id @default(uuid())
+  email      String    @unique
+  password   String
+  firstName  String    @map("first_name")
+  lastName   String    @map("last_name")
+  role       String    @default("admin")
+  resetToken String?   @map("reset_token")
+  resetTokenExpires DateTime? @map("reset_token_expires")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@map("admin_users")
+}

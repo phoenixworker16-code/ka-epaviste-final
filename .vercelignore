@@ -1,0 +1,4 @@
+# Ignore files for Vercel deployment
+node_modules
+.env.local
+.next
