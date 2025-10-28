@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Pool } from 'pg'
 
+// API finale - version robuste
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false },
