@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 
-import { Upload, X, Camera, FileText, CheckCircle, AlertCircle } from "lucide-react"
+import { FileText, CheckCircle, AlertCircle } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { ScrollToTop } from "@/components/scroll-to-top"
 
@@ -52,7 +52,7 @@ export default function RequestPage() {
     acceptTerms: false,
   })
 
-  const [photos, setPhotos] = useState<File[]>([])
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
   const [errorMessage, setErrorMessage] = useState("")
@@ -62,45 +62,7 @@ export default function RequestPage() {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handlePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(event.target.files || [])
-    const validFiles = files.filter((file) => {
-      const isValidType = file.type.startsWith("image/")
-      const isValidSize = file.size <= 5 * 1024 * 1024 // 5MB
-      return isValidType && isValidSize
-    })
 
-    setPhotos((prev) => [...prev, ...validFiles].slice(0, 5)) // Max 5 photos
-  }
-
-  const removePhoto = (index: number) => {
-    setPhotos((prev) => prev.filter((_, i) => i !== index))
-  }
-
-  const uploadPhotos = async (photos: File[]): Promise<string[]> => {
-    const photoUrls: string[] = []
-
-    for (const photo of photos) {
-      const formData = new FormData()
-      formData.append('file', photo)
-      
-      try {
-        const response = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData,
-        })
-        
-        if (response.ok) {
-          const data = await response.json()
-          photoUrls.push(data.url)
-        }
-      } catch (error) {
-        console.error('Error uploading photo:', error)
-      }
-    }
-
-    return photoUrls
-  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -108,9 +70,6 @@ export default function RequestPage() {
     setErrorMessage("")
 
     try {
-      // Upload photos first
-      const photoUrls = photos.length > 0 ? await uploadPhotos(photos) : []
-
       // Submit the request
       const response = await fetch('/api/requests', {
         method: 'POST',
@@ -131,7 +90,7 @@ export default function RequestPage() {
           city: formData.city,
           postal_code: formData.postalCode,
           additional_info: formData.additionalInfo,
-          photo_urls: photoUrls,
+
         }),
       })
 
@@ -378,67 +337,7 @@ export default function RequestPage() {
                   </CardContent>
                 </Card>
 
-                {/* Photos Upload */}
-                <Card>
-                  <CardHeader className="pb-4">
-                    <CardTitle className="flex items-center space-x-2">
-                      <Camera className="h-5 w-5 text-primary" />
-                      <span>Photos du véhicule</span>
-                    </CardTitle>
-                    <CardDescription>
-                      Ajoutez des photos pour nous aider à évaluer l'état du véhicule (optionnel, max 5 photos)
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {/* Upload Button */}
-                      <div className="flex items-center justify-center w-full">
-                        <label
-                          htmlFor="photo-upload"
-                          className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-muted-foreground/25 rounded-lg cursor-pointer hover:bg-muted/50 transition-colors"
-                        >
-                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <Upload className="w-8 h-8 mb-2 text-muted-foreground" />
-                            <p className="mb-2 text-sm text-muted-foreground">
-                              <span className="font-semibold">Cliquez pour ajouter</span> des photos
-                            </p>
-                            <p className="text-xs text-muted-foreground">PNG, JPG jusqu'à 5MB (max 5 photos)</p>
-                          </div>
-                          <input
-                            id="photo-upload"
-                            type="file"
-                            className="hidden"
-                            multiple
-                            accept="image/*"
-                            onChange={handlePhotoUpload}
-                          />
-                        </label>
-                      </div>
 
-                      {/* Photo Preview */}
-                      {photos.length > 0 && (
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                          {photos.map((photo, index) => (
-                            <div key={index} className="relative group">
-                              <img
-                                src={URL.createObjectURL(photo) || "/placeholder.svg"}
-                                alt={`Photo ${index + 1}`}
-                                className="w-full h-24 object-cover rounded-lg"
-                              />
-                              <button
-                                type="button"
-                                onClick={() => removePhoto(index)}
-                                className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                              >
-                                <X className="h-4 w-4" />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                </Card>
 
                 {/* Additional Information */}
                 <Card>

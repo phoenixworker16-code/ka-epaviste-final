@@ -14,9 +14,11 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="bg-primary p-2 rounded-lg">
-              <Car className="h-6 w-6 text-primary-foreground" />
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="KA Auto Épaves" 
+              className="h-10 w-10 rounded-lg"
+            />
             <div>
               <h1 className="text-xl font-bold text-foreground">KA Auto Épaves</h1>
               <p className="text-xs text-muted-foreground">Centre-Val de Loire</p>
