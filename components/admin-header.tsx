@@ -74,9 +74,11 @@ export function AdminHeader({ user }: AdminHeaderProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>
-                  <User className="mr-2 h-4 w-4" />
-                  Profil
+                <DropdownMenuItem asChild>
+                  <a href="/admin/profile" className="flex items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    Profil
+                  </a>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout} className="text-red-600">

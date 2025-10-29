@@ -409,13 +409,14 @@ export default function AdminRequestsPage() {
                                         <Label htmlFor="status">Statut</Label>
                                         <Select
                                           value={selectedRequest.status}
-                                          onValueChange={(value) =>
+                                          onValueChange={(value) => {
+                                            setSelectedRequest({ ...selectedRequest, status: value })
                                             updateRequestStatus(
                                               selectedRequest.id,
                                               value,
-                                              selectedRequest.admin_notes || "",
+                                              selectedRequest.admin_notes || ""
                                             )
-                                          }
+                                          }}
                                           disabled={isUpdating}
                                         >
                                           <SelectTrigger>
