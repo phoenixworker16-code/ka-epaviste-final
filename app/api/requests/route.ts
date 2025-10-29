@@ -22,10 +22,10 @@ export async function POST(request: NextRequest) {
     
     const result = await client.query(`
       INSERT INTO removal_requests (
-        first_name, last_name, email, phone,
+        id, first_name, last_name, email, phone,
         vehicle_brand, vehicle_model, vehicle_year, license_plate, vehicle_condition,
         address, city, postal_code, additional_info, status, created_at, updated_at
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW(), NOW())
+      ) VALUES (gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, NOW(), NOW())
       RETURNING id
     `, [
       data.first_name, data.last_name, data.email, data.phone,
