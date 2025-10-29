@@ -69,8 +69,8 @@ npx prisma db seed
 ### 5. Accéder à l'administration
 
 - URL : `https://votre-site.vercel.app/admin/login`
-- Email : `admin@ka-autoepaves.fr`
-- Mot de passe : `test@123`
+- Email : `admin@votredomaine.fr`
+- Mot de passe : `[Configurez votre mot de passe sécurisé]`
 
 ⚠️ **IMPORTANT** : Changez le mot de passe après la première connexion !
 

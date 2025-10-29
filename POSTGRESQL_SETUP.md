@@ -18,9 +18,9 @@
 
 3. **Configurer .env.local** :
    ```
-   DATABASE_URL=postgresql://ka_user:votre_mot_de_passe@localhost:5432/ka_auto_epaves
-   ADMIN_USERNAME=admin
-   ADMIN_PASSWORD=admin123
+   DATABASE_URL=postgresql://username:password@localhost:5432/database_name
+   ADMIN_USERNAME=votre_admin
+   ADMIN_PASSWORD=votre_mot_de_passe_securise
    ```
 
 4. **Initialiser la base de données** :

@@ -71,8 +71,8 @@ Dans la section "Environment Variables", ajoutez :
 ## 🔐 ÉTAPE 5 : Accéder à l'Admin
 
 1. Allez sur `https://votre-site.vercel.app/admin/login`
-2. Email : `admin@ka-autoepaves.fr`
-3. Mot de passe : `test@123`
+2. Email : `admin@votredomaine.fr`
+3. Mot de passe : `[Configurez votre mot de passe sécurisé]`
 
 ## ⚠️ IMPORTANT
 

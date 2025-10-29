@@ -4,17 +4,17 @@
 
 1. **DATABASE_URL**
    ```
-   postgresql://neondb_owner:npg_TLSHa2wiyb4C@ep-morning-night-agizqqi0-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require
+   postgresql://username:password@host:port/database?sslmode=require
    ```
 
 2. **JWT_SECRET**
    ```
-   ka-auto-epaves-super-secret-key-2024
+   [Générez une clé secrète forte]
    ```
 
 3. **NEXT_PUBLIC_APP_URL**
    ```
-   https://ka-epaviste-final.vercel.app
+   https://votre-domaine.vercel.app
    ```
 
 ## Étapes :

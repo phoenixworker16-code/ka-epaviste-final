@@ -116,7 +116,7 @@ node -e "const bcrypt = require('bcryptjs'); console.log(bcrypt.hashSync('VotreM
 INSERT INTO admin_users (id, email, first_name, last_name, role, password_hash)
 VALUES (
   gen_random_uuid(),
-  'votre-email@ka-autoepaves.fr',
+  'admin@votredomaine.fr',
   'Votre',
   'Nom',
   'super_admin',

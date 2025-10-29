@@ -26,7 +26,7 @@ Ajoutez ces 3 variables dans Vercel :
 | Key | Value | Environnements |
 |-----|-------|----------------|
 | `DATABASE_URL` | Votre URL Neon complète | ☑ Production ☑ Preview ☑ Development |
-| `JWT_SECRET` | `xjDWCmgT6U8+/ne9lsEZuIngzaaKyEJ6YWTKil6hL4U=` | ☑ Production ☑ Preview ☑ Development |
+| `JWT_SECRET` | `[Générez votre propre clé secrète]` | ☑ Production ☑ Preview ☑ Development |
 | `NEXT_PUBLIC_APP_URL` | `https://votre-projet.vercel.app` | ☑ Production |
 
 **⚠️ Important** : 
@@ -102,7 +102,7 @@ Après le premier déploiement réussi :
 INSERT INTO admin_users (id, email, password, first_name, last_name, role)
 VALUES (
   gen_random_uuid(),
-  'admin@ka-autoepaves.fr',
+  'admin@votredomaine.fr',
   '$2a$10$...', -- votre hash généré
   'Admin',
   'Principal',
