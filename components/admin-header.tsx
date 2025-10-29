@@ -54,6 +54,9 @@ export function AdminHeader({ user }: AdminHeaderProps) {
             <Link href="/admin/requests" className="text-foreground hover:text-primary transition-colors">
               Demandes
             </Link>
+            <Link href="/admin/messages" className="text-foreground hover:text-primary transition-colors">
+              Messages
+            </Link>
             <Link href="/admin/statistics" className="text-foreground hover:text-primary transition-colors">
               Statistiques
             </Link>
@@ -107,6 +110,13 @@ export function AdminHeader({ user }: AdminHeaderProps) {
                 onClick={() => setIsMenuOpen(false)}
               >
                 Demandes
+              </Link>
+              <Link
+                href="/admin/messages"
+                className="text-foreground hover:text-primary transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Messages
               </Link>
               <Link
                 href="/admin/statistics"
