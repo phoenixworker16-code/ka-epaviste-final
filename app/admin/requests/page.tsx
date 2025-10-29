@@ -123,6 +123,8 @@ export default function AdminRequestsPage() {
 
   const updateRequestStatus = async (requestId: string, status: string, adminNotes?: string) => {
     setIsUpdating(true)
+    console.log('Updating status:', { requestId, status, adminNotes })
+    
     try {
       const response = await fetch('/api/admin/requests', {
         method: 'PUT',
@@ -131,10 +133,13 @@ export default function AdminRequestsPage() {
       })
       
       if (response.ok) {
+        console.log('Status updated successfully')
         await fetchRequests()
         if (selectedRequest?.id === requestId) {
           setSelectedRequest({ ...selectedRequest, status, admin_notes: adminNotes || selectedRequest.admin_notes })
         }
+      } else {
+        console.error('Failed to update status:', await response.text())
       }
     } catch (error) {
       console.error("Error updating request:", error)

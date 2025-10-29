@@ -44,27 +44,26 @@ export async function PUT(request: NextRequest) {
       )
     }
     
-    const updates = []
+    let query = 'UPDATE removal_requests SET updated_at = NOW()'
     const values = []
     let paramCount = 0
     
     if (status) {
-      updates.push(`status = $${++paramCount}`)
+      query += `, status = $${++paramCount}`
       values.push(status)
     }
     
     if (admin_notes !== undefined) {
-      updates.push(`admin_notes = $${++paramCount}`)
+      query += `, admin_notes = $${++paramCount}`
       values.push(admin_notes)
     }
     
-    updates.push(`updated_at = NOW()`)
+    query += ` WHERE id = $${++paramCount}`
     values.push(id)
     
-    await pool.query(
-      `UPDATE removal_requests SET ${updates.join(', ')} WHERE id = $${++paramCount}`,
-      values
-    )
+    console.log('Updating request:', { id, status, admin_notes, query, values })
+    
+    await pool.query(query, values)
     
     return NextResponse.json({ success: true })
   } catch (error) {

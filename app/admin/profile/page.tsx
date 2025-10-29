@@ -61,12 +61,29 @@ export default function AdminProfilePage() {
       return
     }
 
-    // Simulation - remplacer par vraie API
-    setTimeout(() => {
-      setUpdateStatus("success")
-      setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" })
-      setIsUpdating(false)
-    }, 1000)
+    try {
+      const response = await fetch('/api/admin/change-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword
+        })
+      })
+
+      if (response.ok) {
+        setUpdateStatus("success")
+        setPasswordForm({ currentPassword: "", newPassword: "", confirmPassword: "" })
+      } else {
+        const error = await response.json()
+        setErrorMessage(error.error || "Erreur lors du changement de mot de passe")
+        setUpdateStatus("error")
+      }
+    } catch (error) {
+      setErrorMessage("Erreur de connexion")
+      setUpdateStatus("error")
+    }
+    setIsUpdating(false)
   }
 
   const handleLogout = async () => {
@@ -80,18 +97,20 @@ export default function AdminProfilePage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Profil administrateur</h1>
+          <div className="mb-8 bg-gradient-to-r from-primary/10 to-primary/5 p-6 rounded-lg border border-primary/20">
+            <h1 className="text-3xl font-bold mb-2 text-primary">Profil administrateur</h1>
             <p className="text-muted-foreground">Gérez vos informations et paramètres de compte</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
               {/* Informations du profil */}
-              <Card>
-                <CardHeader>
+              <Card className="border-primary/20 shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b border-primary/20">
                   <CardTitle className="flex items-center space-x-2">
-                    <User className="h-5 w-5 text-primary" />
+                    <div className="bg-primary p-2 rounded-lg">
+                      <User className="h-5 w-5 text-white" />
+                    </div>
                     <span>Informations personnelles</span>
                   </CardTitle>
                   <CardDescription>Vos informations de compte</CardDescription>
@@ -122,10 +141,12 @@ export default function AdminProfilePage() {
               </Card>
 
               {/* Changement de mot de passe */}
-              <Card>
-                <CardHeader>
+              <Card className="border-primary/20 shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b border-primary/20">
                   <CardTitle className="flex items-center space-x-2">
-                    <Key className="h-5 w-5 text-primary" />
+                    <div className="bg-primary p-2 rounded-lg">
+                      <Key className="h-5 w-5 text-white" />
+                    </div>
                     <span>Sécurité</span>
                   </CardTitle>
                   <CardDescription>Modifiez votre mot de passe</CardDescription>
@@ -201,7 +222,7 @@ export default function AdminProfilePage() {
                       </div>
                     )}
 
-                    <Button type="submit" disabled={isUpdating}>
+                    <Button type="submit" disabled={isUpdating} className="bg-primary hover:bg-primary/90">
                       {isUpdating ? "Modification..." : "Modifier le mot de passe"}
                     </Button>
                   </form>
@@ -212,10 +233,12 @@ export default function AdminProfilePage() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Notifications */}
-              <Card>
-                <CardHeader>
+              <Card className="border-primary/20 shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b border-primary/20">
                   <CardTitle className="flex items-center space-x-2">
-                    <Bell className="h-5 w-5 text-primary" />
+                    <div className="bg-primary p-2 rounded-lg">
+                      <Bell className="h-5 w-5 text-white" />
+                    </div>
                     <span>Notifications</span>
                   </CardTitle>
                   <CardDescription>Gérez vos préférences</CardDescription>
@@ -261,24 +284,26 @@ export default function AdminProfilePage() {
               </Card>
 
               {/* Actions */}
-              <Card>
-                <CardHeader>
+              <Card className="border-primary/20 shadow-lg">
+                <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b border-primary/20">
                   <CardTitle className="flex items-center space-x-2">
-                    <Settings className="h-5 w-5 text-primary" />
+                    <div className="bg-primary p-2 rounded-lg">
+                      <Settings className="h-5 w-5 text-white" />
+                    </div>
                     <span>Actions</span>
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button variant="outline" className="w-full justify-start" asChild>
+                  <Button variant="outline" className="w-full justify-start border-primary/30 hover:bg-primary/10" asChild>
                     <a href="/admin/dashboard">
-                      <Settings className="mr-2 h-4 w-4" />
+                      <Settings className="mr-2 h-4 w-4 text-primary" />
                       Tableau de bord
                     </a>
                   </Button>
                   
-                  <Button variant="outline" className="w-full justify-start" asChild>
+                  <Button variant="outline" className="w-full justify-start border-primary/30 hover:bg-primary/10" asChild>
                     <a href="/admin/requests">
-                      <User className="mr-2 h-4 w-4" />
+                      <User className="mr-2 h-4 w-4 text-primary" />
                       Gérer les demandes
                     </a>
                   </Button>
