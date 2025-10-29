@@ -1,8 +1,10 @@
-import { requireAdmin } from "@/lib/admin-auth"
+"use client"
+
+import { useState, useEffect } from "react"
 import { AdminHeader } from "@/components/admin-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Pool } from 'pg'
-import { Car, TrendingUp, MapPin, Calendar, BarChart3, PieChart } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Car, TrendingUp, MapPin, Calendar, BarChart3, PieChart, RefreshCw, Download } from "lucide-react"
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -82,8 +84,34 @@ export default async function AdminStatisticsPage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Statistiques</h1>
-          <p className="text-muted-foreground">Analyse des données et tendances</p>
+          <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-6 rounded-lg border border-primary/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2 text-primary">Statistiques</h1>
+                <p className="text-muted-foreground">Analyse des données et tendances</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-primary/30 hover:bg-primary/10"
+                  onClick={() => window.location.reload()}
+                >
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Actualiser
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-primary/30 hover:bg-primary/10"
+                  onClick={() => window.open('/api/admin/export-pdf', '_blank')}
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Export PDF
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Overview Cards */}

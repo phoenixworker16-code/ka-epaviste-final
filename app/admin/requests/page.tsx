@@ -34,6 +34,8 @@ import {
   AlertTriangle,
   Search,
   Filter,
+  RefreshCw,
+  Download,
 } from "lucide-react"
 
 interface RemovalRequest {
@@ -196,15 +198,43 @@ export default function AdminRequestsPage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Gestion des demandes</h1>
-          <p className="text-muted-foreground">Gérez toutes les demandes d'enlèvement d'épaves</p>
+          <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-6 rounded-lg border border-primary/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2 text-primary">Gestion des demandes</h1>
+                <p className="text-muted-foreground">Gérez toutes les demandes d'enlèvement d'épaves</p>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={fetchRequests}
+                  className="border-primary/30 hover:bg-primary/10"
+                >
+                  <RefreshCw className="h-4 w-4 mr-2" />
+                  Actualiser
+                </Button>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  className="border-primary/30 hover:bg-primary/10"
+                  onClick={() => window.open('/api/admin/export-pdf', '_blank')}
+                >
+                  <Download className="h-4 w-4 mr-2" />
+                  Export PDF
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Filters */}
-        <Card className="mb-6">
-          <CardHeader>
+        <Card className="mb-6 border-primary/20 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b border-primary/20">
             <CardTitle className="flex items-center space-x-2">
-              <Filter className="h-5 w-5" />
+              <div className="bg-primary p-2 rounded-lg">
+                <Filter className="h-5 w-5 text-white" />
+              </div>
               <span>Filtres</span>
             </CardTitle>
           </CardHeader>
@@ -244,9 +274,14 @@ export default function AdminRequestsPage() {
         </Card>
 
         {/* Requests List */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Demandes ({filteredRequests.length})</CardTitle>
+        <Card className="border-primary/20 shadow-lg">
+          <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 border-b border-primary/20">
+            <CardTitle className="flex items-center space-x-2">
+              <div className="bg-primary p-2 rounded-lg">
+                <Car className="h-5 w-5 text-white" />
+              </div>
+              <span>Demandes ({filteredRequests.length})</span>
+            </CardTitle>
             <CardDescription>Liste de toutes les demandes d'enlèvement</CardDescription>
           </CardHeader>
           <CardContent>

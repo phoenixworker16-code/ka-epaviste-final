@@ -122,6 +122,7 @@ export default function AdminDashboardPage() {
                   variant="outline" 
                   size="sm"
                   className="border-primary/30 hover:bg-primary/10"
+                  onClick={() => window.open('/api/admin/export-pdf', '_blank')}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Export PDF

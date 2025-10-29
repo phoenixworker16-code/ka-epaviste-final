@@ -51,9 +51,11 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="flex items-center justify-center space-x-2 mb-4">
-            <div className="bg-primary p-3 rounded-lg">
-              <Car className="h-8 w-8 text-primary-foreground" />
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="KA Auto Épaves" 
+              className="h-12 w-12 rounded-lg"
+            />
             <div>
               <h1 className="text-2xl font-bold text-foreground">KA Auto Épaves</h1>
               <p className="text-sm text-muted-foreground">Administration</p>
