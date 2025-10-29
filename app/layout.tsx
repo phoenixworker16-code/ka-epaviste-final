@@ -41,14 +41,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://ka-auto-epaves.vercel.app"),
+  metadataBase: new URL("https://ka-epaviste-final.vercel.app"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
     type: "website",
     locale: "fr_FR",
-    url: "https://ka-auto-epaves.vercel.app",
+    url: "https://ka-epaviste-final.vercel.app",
     siteName: "KA Auto Épaves",
     title: "KA Auto Épaves - Enlèvement gratuit d'épaves automobiles",
     description:
@@ -90,7 +90,7 @@ const jsonLd = {
   "@type": "LocalBusiness",
   name: "KA Auto Épaves",
   description: "Service professionnel d'enlèvement d'épaves automobiles en Centre-Val de Loire",
-  url: "https://ka-auto-epaves.vercel.app",
+  url: "https://ka-epaviste-final.vercel.app",
   telephone: "+33 6 63 83 03 03",
   email: "contact@ka-autoepaves.fr",
   areaServed: {
@@ -131,7 +131,40 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr">
+      <head>
+        {/* Google Tag Manager */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer','GTM-XXXXXXX');`,
+          }}
+        />
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-XXXXXXXXXX');
+            `,
+          }}
+        />
+      </head>
       <body className="font-sans">
+        {/* Google Tag Manager (noscript) */}
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+            height="0"
+            width="0"
+            style={{ display: 'none', visibility: 'hidden' }}
+          ></iframe>
+        </noscript>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         <Suspense fallback={null}>{children}</Suspense>
       </body>
