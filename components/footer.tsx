@@ -9,9 +9,11 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="bg-primary p-2 rounded-lg">
-                <Car className="h-6 w-6 text-primary-foreground" />
-              </div>
+              <img 
+                src="/logo.png" 
+                alt="KA Auto Épaves" 
+                className="h-10 w-10 rounded-lg"
+              />
               <div>
                 <h3 className="text-lg font-bold">KA Auto Épaves</h3>
                 <p className="text-sm text-gray-400">Centre-Val de Loire</p>
