@@ -69,6 +69,16 @@ export default function RequestPage() {
     setIsSubmitting(true)
     setErrorMessage("")
 
+    // Validation des champs requis
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || 
+        !formData.vehicleBrand || !formData.vehicleModel || !formData.vehicleCondition ||
+        !formData.address || !formData.city || !formData.postalCode) {
+      setErrorMessage("Veuillez remplir tous les champs obligatoires")
+      setSubmitStatus("error")
+      setIsSubmitting(false)
+      return
+    }
+
     try {
       // Submit the request
       const response = await fetch('/api/requests', {
@@ -95,7 +105,9 @@ export default function RequestPage() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to submit request')
+        const errorData = await response.text()
+        console.error('API Error:', response.status, errorData)
+        throw new Error(`Erreur ${response.status}: ${errorData}`)
       }
 
       setSubmitStatus("success")
