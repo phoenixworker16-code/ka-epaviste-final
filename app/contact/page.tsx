@@ -1,3 +1,6 @@
+"use client"
+
+import { useState } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -5,10 +8,70 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Phone, Mail, MapPin, Clock, MessageCircle, Send } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, MessageCircle, Send, CheckCircle, AlertCircle } from "lucide-react"
 import { ScrollToTop } from "@/components/scroll-to-top"
 
+interface ContactFormData {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  subject: string
+  message: string
+}
+
 export default function ContactPage() {
+  const [formData, setFormData] = useState<ContactFormData>({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  })
+  
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [errorMessage, setErrorMessage] = useState("")
+
+  const handleInputChange = (field: keyof ContactFormData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setErrorMessage("")
+
+    if (!formData.firstName || !formData.lastName || !formData.email || !formData.subject || !formData.message) {
+      setErrorMessage("Veuillez remplir tous les champs obligatoires")
+      setSubmitStatus("error")
+      setIsSubmitting(false)
+      return
+    }
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.text()
+        throw new Error(`Erreur ${response.status}: ${errorData}`)
+      }
+
+      setSubmitStatus("success")
+      setFormData({ firstName: "", lastName: "", email: "", phone: "", subject: "", message: "" })
+    } catch (error) {
+      console.error("Error submitting contact:", error)
+      setSubmitStatus("error")
+      setErrorMessage("Une erreur est survenue lors de l'envoi de votre message. Veuillez réessayer.")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
@@ -134,48 +197,103 @@ export default function ContactPage() {
                       <CardDescription>Remplissez ce formulaire et nous vous répondrons rapidement</CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <form className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="firstName">Prénom *</Label>
-                            <Input id="firstName" placeholder="Votre prénom" required />
+                      {submitStatus === "success" ? (
+                        <div className="text-center py-8">
+                          <div className="mx-auto bg-green-100 p-3 rounded-full w-fit mb-4">
+                            <CheckCircle className="h-8 w-8 text-green-600" />
                           </div>
-                          <div>
-                            <Label htmlFor="lastName">Nom *</Label>
-                            <Input id="lastName" placeholder="Votre nom" required />
+                          <h3 className="text-xl font-semibold mb-2">Message envoyé avec succès !</h3>
+                          <p className="text-muted-foreground mb-4">
+                            Merci pour votre message. Nous vous répondrons dans les plus brefs délais.
+                          </p>
+                          <Button onClick={() => setSubmitStatus("idle")} variant="outline">
+                            Envoyer un autre message
+                          </Button>
+                        </div>
+                      ) : (
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="firstName">Prénom *</Label>
+                              <Input 
+                                id="firstName" 
+                                value={formData.firstName}
+                                onChange={(e) => handleInputChange("firstName", e.target.value)}
+                                placeholder="Votre prénom" 
+                                required 
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="lastName">Nom *</Label>
+                              <Input 
+                                id="lastName" 
+                                value={formData.lastName}
+                                onChange={(e) => handleInputChange("lastName", e.target.value)}
+                                placeholder="Votre nom" 
+                                required 
+                              />
+                            </div>
                           </div>
-                        </div>
 
-                        <div>
-                          <Label htmlFor="email">Email *</Label>
-                          <Input id="email" type="email" placeholder="votre@email.fr" required />
-                        </div>
+                          <div>
+                            <Label htmlFor="email">Email *</Label>
+                            <Input 
+                              id="email" 
+                              type="email" 
+                              value={formData.email}
+                              onChange={(e) => handleInputChange("email", e.target.value)}
+                              placeholder="votre@email.fr" 
+                              required 
+                            />
+                          </div>
 
-                        <div>
-                          <Label htmlFor="phone">Téléphone</Label>
-                          <Input id="phone" type="tel" placeholder="+33 6 63 83 03 03" />
-                        </div>
+                          <div>
+                            <Label htmlFor="phone">Téléphone</Label>
+                            <Input 
+                              id="phone" 
+                              type="tel" 
+                              value={formData.phone}
+                              onChange={(e) => handleInputChange("phone", e.target.value)}
+                              placeholder="+33 6 63 83 03 03" 
+                            />
+                          </div>
 
-                        <div>
-                          <Label htmlFor="subject">Sujet *</Label>
-                          <Input id="subject" placeholder="Objet de votre message" required />
-                        </div>
+                          <div>
+                            <Label htmlFor="subject">Sujet *</Label>
+                            <Input 
+                              id="subject" 
+                              value={formData.subject}
+                              onChange={(e) => handleInputChange("subject", e.target.value)}
+                              placeholder="Objet de votre message" 
+                              required 
+                            />
+                          </div>
 
-                        <div>
-                          <Label htmlFor="message">Message *</Label>
-                          <Textarea
-                            id="message"
-                            placeholder="Décrivez votre demande ou votre question..."
-                            rows={5}
-                            required
-                          />
-                        </div>
+                          <div>
+                            <Label htmlFor="message">Message *</Label>
+                            <Textarea
+                              id="message"
+                              value={formData.message}
+                              onChange={(e) => handleInputChange("message", e.target.value)}
+                              placeholder="Décrivez votre demande ou votre question..."
+                              rows={5}
+                              required
+                            />
+                          </div>
 
-                        <Button type="submit" className="w-full">
-                          <Send className="mr-2 h-4 w-4" />
-                          Envoyer le message
-                        </Button>
-                      </form>
+                          {submitStatus === "error" && (
+                            <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-3 rounded-lg">
+                              <AlertCircle className="h-5 w-5" />
+                              <p className="text-sm">{errorMessage}</p>
+                            </div>
+                          )}
+
+                          <Button type="submit" className="w-full" disabled={isSubmitting}>
+                            <Send className="mr-2 h-4 w-4" />
+                            {isSubmitting ? "Envoi en cours..." : "Envoyer le message"}
+                          </Button>
+                        </form>
+                      )}
                     </CardContent>
                   </Card>
                 </div>
