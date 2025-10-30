@@ -6,67 +6,72 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Car, TrendingUp, MapPin, Calendar, BarChart3, PieChart, RefreshCw, Download } from "lucide-react"
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }
-})
+interface StatisticsData {
+  totalRequests: number
+  requestsByStatus: Record<string, number>
+  requestsByCity: Record<string, number>
+  requestsByBrand: Record<string, number>
+  recentRequests: number
+  thisMonthRequests: number
+  monthlyGrowth: number
+}
 
-export default async function AdminStatisticsPage() {
-  const admin = await requireAdmin()
+export default function AdminStatisticsPage() {
+  const [admin, setAdmin] = useState<any>(null)
+  const [stats, setStats] = useState<StatisticsData | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  // Get various statistics
-  const totalRequestsResult = await pool.query('SELECT COUNT(*) FROM removal_requests')
-  const totalRequests = parseInt(totalRequestsResult.rows[0].count)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('adminToken')
+        if (!token) {
+          window.location.href = '/admin/login'
+          return
+        }
 
-  const statusResult = await pool.query('SELECT status, COUNT(*) as count FROM removal_requests GROUP BY status')
-  const requestsByStatus = statusResult.rows.reduce((acc, row) => {
-    acc[row.status] = parseInt(row.count)
-    return acc
-  }, {} as Record<string, number>)
+        const [adminRes, statsRes] = await Promise.all([
+          fetch('/api/admin/profile', {
+            headers: { Authorization: `Bearer ${token}` }
+          }),
+          fetch('/api/admin/statistics', {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        ])
 
-  const cityResult = await pool.query('SELECT city, COUNT(*) as count FROM removal_requests GROUP BY city')
-  const requestsByCity = cityResult.rows.reduce((acc, row) => {
-    acc[row.city] = parseInt(row.count)
-    return acc
-  }, {} as Record<string, number>)
+        if (adminRes.ok && statsRes.ok) {
+          const adminData = await adminRes.json()
+          const statsData = await statsRes.json()
+          setAdmin(adminData)
+          setStats(statsData)
+        } else {
+          window.location.href = '/admin/login'
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        window.location.href = '/admin/login'
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  const brandResult = await pool.query('SELECT vehicle_brand, COUNT(*) as count FROM removal_requests GROUP BY vehicle_brand')
-  const requestsByBrand = brandResult.rows.reduce((acc, row) => {
-    acc[row.vehicle_brand] = parseInt(row.count)
-    return acc
-  }, {} as Record<string, number>)
+    fetchData()
+  }, [])
 
-  const recentResult = await pool.query(
-    'SELECT COUNT(*) FROM removal_requests WHERE created_at >= $1',
-    [new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)]
-  )
-  const recentRequests = parseInt(recentResult.rows[0].count)
+  if (loading || !admin || !stats) {
+    return <div className="min-h-screen bg-muted/30 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+        <p>Chargement des statistiques...</p>
+      </div>
+    </div>
+  }
 
-  const thisMonthResult = await pool.query(
-    'SELECT COUNT(*) FROM removal_requests WHERE created_at >= $1',
-    [new Date(new Date().getFullYear(), new Date().getMonth(), 1)]
-  )
-  const thisMonthRequests = parseInt(thisMonthResult.rows[0].count)
-
-  const lastMonthResult = await pool.query(
-    'SELECT COUNT(*) FROM removal_requests WHERE created_at >= $1 AND created_at < $2',
-    [
-      new Date(new Date().getFullYear(), new Date().getMonth() - 1, 1),
-      new Date(new Date().getFullYear(), new Date().getMonth(), 1)
-    ]
-  )
-  const lastMonthRequests = parseInt(lastMonthResult.rows[0].count)
-
-  const monthlyGrowth =
-    lastMonthRequests && lastMonthRequests > 0
-      ? Math.round(((thisMonthRequests - lastMonthRequests) / lastMonthRequests) * 100)
-      : 0
-
-  const topCities = Object.entries(requestsByCity)
+  const topCities = Object.entries(stats.requestsByCity)
     .sort(([, a], [, b]) => (b as number) - (a as number))
     .slice(0, 5)
 
-  const topBrands = Object.entries(requestsByBrand)
+  const topBrands = Object.entries(stats.requestsByBrand)
     .sort(([, a], [, b]) => (b as number) - (a as number))
     .slice(0, 5)
 
