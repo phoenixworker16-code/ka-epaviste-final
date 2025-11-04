@@ -79,114 +79,98 @@ export default function AdminStatisticsPage() {
   const exportToPDF = async () => {
     const pdf = new jsPDF()
     
-    // Header avec fond orange
-    pdf.setFillColor(255, 102, 0)
-    pdf.rect(0, 0, 210, 40, 'F')
+    // Header blanc avec logo noir
+    const img = new Image()
+    img.src = '/logo.png'
+    img.onload = () => {
+      pdf.addImage(img, 'PNG', 15, 10, 15, 15)
+    }
     
-    // Logo (simulé avec un carré orange foncé)
-    pdf.setFillColor(204, 82, 0)
-    pdf.rect(15, 10, 20, 20, 'F')
-    pdf.setTextColor(255, 255, 255)
-    pdf.setFontSize(14)
-    pdf.text('KA', 22, 23)
-    
-    // Nom entreprise centré
-    pdf.setTextColor(255, 255, 255)
-    pdf.setFontSize(22)
+    pdf.setTextColor(0, 0, 0)
+    pdf.setFontSize(20)
     pdf.text('KA AUTO ÉPAVES', 105, 20, { align: 'center' })
-    pdf.setFontSize(12)
-    pdf.text('Service d\'enlèvement d\'épaves - le Loir-et-Cher', 105, 30, { align: 'center' })
+    pdf.setFontSize(10)
+    pdf.text('Service d\'enlèvement d\'épaves - le Loir-et-Cher', 105, 27, { align: 'center' })
     
-    // Ligne de séparation
     pdf.setDrawColor(255, 102, 0)
-    pdf.setLineWidth(2)
-    pdf.line(20, 50, 190, 50)
+    pdf.setLineWidth(1)
+    pdf.line(20, 35, 190, 35)
     
-    // Titre du rapport
     pdf.setTextColor(255, 102, 0)
-    pdf.setFontSize(18)
-    pdf.text('RAPPORT STATISTIQUES', 105, 65, { align: 'center' })
+    pdf.setFontSize(16)
+    pdf.text('RAPPORT STATISTIQUES', 105, 45, { align: 'center' })
     
+    pdf.setTextColor(0, 0, 0)
+    pdf.setFontSize(9)
+    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 105, 52, { align: 'center' })
+    
+    let yPos = 65
+    pdf.setTextColor(255, 102, 0)
+    pdf.setFontSize(12)
+    pdf.text('Statistiques générales', 20, yPos)
+    
+    yPos += 10
     pdf.setTextColor(0, 0, 0)
     pdf.setFontSize(10)
-    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 105, 75, { align: 'center' })
     
-    // Statistiques principales avec encadrés
-    let yPos = 90
-    pdf.setFillColor(255, 102, 0)
-    pdf.rect(20, yPos, 170, 8, 'F')
-    pdf.setTextColor(255, 255, 255)
-    pdf.setFontSize(14)
-    pdf.text('STATISTIQUES GÉNÉRALES', 105, yPos + 6, { align: 'center' })
-    
-    yPos += 20
-    pdf.setTextColor(0, 0, 0)
-    pdf.setFontSize(12)
-    
-    // Encadrés pour les stats
-    const stats_data = [
-      [`Total demandes: ${stats.totalRequests}`, `Ce mois: ${stats.thisMonthRequests}`],
-      [`30 derniers jours: ${stats.recentRequests}`, `Croissance: ${stats.monthlyGrowth}%`]
+    const statsData = [
+      `Total demandes: ${stats.totalRequests}`,
+      `Ce mois: ${stats.thisMonthRequests}`,
+      `30 derniers jours: ${stats.recentRequests}`,
+      `Croissance: ${stats.monthlyGrowth}%`
     ]
     
-    stats_data.forEach(([left, right]) => {
-      pdf.setDrawColor(255, 102, 0)
-      pdf.rect(20, yPos, 80, 15)
-      pdf.rect(110, yPos, 80, 15)
-      pdf.text(left, 25, yPos + 10)
-      pdf.text(right, 115, yPos + 10)
-      yPos += 20
+    statsData.forEach(stat => {
+      pdf.setDrawColor(200, 200, 200)
+      pdf.setLineWidth(0.5)
+      pdf.line(20, yPos + 2, 190, yPos + 2)
+      pdf.text(stat, 25, yPos + 7)
+      yPos += 12
     })
     
-    // Répartition par statut
     yPos += 10
-    pdf.setFillColor(255, 102, 0)
-    pdf.rect(20, yPos, 170, 8, 'F')
-    pdf.setTextColor(255, 255, 255)
-    pdf.setFontSize(14)
-    pdf.text('RÉPARTITION PAR STATUT', 105, yPos + 6, { align: 'center' })
+    pdf.setTextColor(255, 102, 0)
+    pdf.setFontSize(12)
+    pdf.text('Répartition par statut', 20, yPos)
     
-    yPos += 20
+    yPos += 10
     pdf.setTextColor(0, 0, 0)
-    pdf.setFontSize(11)
+    pdf.setFontSize(10)
     Object.entries(stats.requestsByStatus || {}).forEach(([status, count]) => {
       const label = status === 'pending' ? 'En attente' : status === 'completed' ? 'Terminé' : status
       const percentage = stats.totalRequests ? Math.round((count / stats.totalRequests) * 100) : 0
       
-      pdf.setDrawColor(255, 102, 0)
-      pdf.rect(20, yPos, 170, 12)
-      pdf.text(`${label}: ${count} (${percentage}%)`, 25, yPos + 8)
-      yPos += 15
+      pdf.setDrawColor(200, 200, 200)
+      pdf.line(20, yPos + 2, 190, yPos + 2)
+      pdf.text(`${label}: ${count} (${percentage}%)`, 25, yPos + 7)
+      yPos += 12
     })
     
-    // Top villes
     yPos += 10
-    pdf.setFillColor(255, 102, 0)
-    pdf.rect(20, yPos, 170, 8, 'F')
-    pdf.setTextColor(255, 255, 255)
-    pdf.setFontSize(14)
-    pdf.text('TOP 5 VILLES', 105, yPos + 6, { align: 'center' })
+    pdf.setTextColor(255, 102, 0)
+    pdf.setFontSize(12)
+    pdf.text('Top 5 villes', 20, yPos)
     
-    yPos += 20
+    yPos += 10
     pdf.setTextColor(0, 0, 0)
-    pdf.setFontSize(11)
+    pdf.setFontSize(10)
     topCities.forEach(([city, count], index) => {
-      pdf.setDrawColor(255, 102, 0)
-      pdf.rect(20, yPos, 170, 12)
-      pdf.text(`${index + 1}. ${city}: ${count} demandes`, 25, yPos + 8)
-      yPos += 15
+      pdf.setDrawColor(200, 200, 200)
+      pdf.line(20, yPos + 2, 190, yPos + 2)
+      pdf.text(`${index + 1}. ${city}: ${count} demandes`, 25, yPos + 7)
+      yPos += 12
     })
     
-    // Footer
+    // Footer orange avec logo blanc
     pdf.setFillColor(255, 102, 0)
     pdf.rect(0, 270, 210, 27, 'F')
     
     pdf.setTextColor(255, 255, 255)
     pdf.setFontSize(12)
     pdf.text('KA AUTO ÉPAVES', 105, 280, { align: 'center' })
-    pdf.setFontSize(10)
-    pdf.text('📞 +33 6 63 83 03 03  |  📧 contact@ka-autoepaves.fr', 105, 287, { align: 'center' })
-    pdf.text('📍 le Loir-et-Cher, France', 105, 294, { align: 'center' })
+    pdf.setFontSize(9)
+    pdf.text('+33 6 63 83 03 03  |  contact@ka-autoepaves.fr', 105, 287, { align: 'center' })
+    pdf.text('le Loir-et-Cher, France', 105, 294, { align: 'center' })
     
     pdf.save('rapport-ka-auto-epaves.pdf')
   }
