@@ -21,6 +21,7 @@ import {
   LogOut
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import jsPDF from 'jspdf'
 
 interface DashboardStats {
   totalRequests: number
@@ -82,6 +83,30 @@ export default function AdminDashboardPage() {
     router.push("/admin/login")
   }
 
+  const exportToPDF = () => {
+    const pdf = new jsPDF()
+    
+    pdf.setFontSize(20)
+    pdf.setTextColor(255, 102, 0)
+    pdf.text('KA Auto Épaves - Rapport d\'activité', 20, 30)
+    
+    pdf.setFontSize(12)
+    pdf.setTextColor(0, 0, 0)
+    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 20, 45)
+    pdf.text('le Loir-et-Cher', 20, 55)
+    
+    pdf.setFontSize(16)
+    pdf.text('Statistiques', 20, 75)
+    
+    pdf.setFontSize(12)
+    pdf.text(`Total demandes: ${stats.totalRequests}`, 20, 90)
+    pdf.text(`En attente: ${stats.pendingRequests}`, 20, 105)
+    pdf.text(`Terminées: ${stats.completedRequests}`, 20, 120)
+    pdf.text(`Messages: ${stats.totalMessages}`, 20, 135)
+    
+    pdf.save('rapport-ka-auto-epaves.pdf')
+  }
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-muted/30">
@@ -122,7 +147,7 @@ export default function AdminDashboardPage() {
                   variant="outline" 
                   size="sm"
                   className="border-primary/30 hover:bg-primary/10"
-                  onClick={() => window.open('/api/admin/export-pdf', '_blank')}
+                  onClick={exportToPDF}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Export PDF

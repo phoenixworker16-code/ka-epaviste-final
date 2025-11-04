@@ -7,9 +7,12 @@ const pool = new Pool({
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 })
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    await requireAdmin()
+    const token = request.headers.get('Authorization')?.replace('Bearer ', '')
+    if (!token) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
+    }
 
     const totalRequestsResult = await pool.query('SELECT COUNT(*) FROM removal_requests')
     const totalRequests = parseInt(totalRequestsResult.rows[0].count)

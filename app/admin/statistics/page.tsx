@@ -5,6 +5,7 @@ import { AdminHeader } from "@/components/admin-header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Car, TrendingUp, MapPin, Calendar, BarChart3, PieChart, RefreshCw, Download } from "lucide-react"
+import jsPDF from 'jspdf'
 
 interface StatisticsData {
   totalRequests: number
@@ -75,6 +76,55 @@ export default function AdminStatisticsPage() {
     .sort(([, a], [, b]) => (b as number) - (a as number))
     .slice(0, 5)
 
+  const exportToPDF = () => {
+    const pdf = new jsPDF()
+    
+    // Header
+    pdf.setFontSize(20)
+    pdf.setTextColor(255, 102, 0)
+    pdf.text('KA Auto Épaves - Rapport Statistiques', 20, 30)
+    
+    pdf.setFontSize(12)
+    pdf.setTextColor(0, 0, 0)
+    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 20, 45)
+    pdf.text('le Loir-et-Cher', 20, 55)
+    
+    // Stats
+    pdf.setFontSize(16)
+    pdf.text('Statistiques générales', 20, 75)
+    
+    pdf.setFontSize(12)
+    pdf.text(`Total demandes: ${stats.totalRequests}`, 20, 90)
+    pdf.text(`Ce mois: ${stats.thisMonthRequests}`, 20, 105)
+    pdf.text(`30 derniers jours: ${stats.recentRequests}`, 20, 120)
+    pdf.text(`Croissance mensuelle: ${stats.monthlyGrowth}%`, 20, 135)
+    
+    // Status distribution
+    pdf.setFontSize(16)
+    pdf.text('Répartition par statut', 20, 160)
+    
+    let yPos = 175
+    Object.entries(stats.requestsByStatus || {}).forEach(([status, count]) => {
+      const label = status === 'pending' ? 'En attente' : status === 'completed' ? 'Terminé' : status
+      pdf.setFontSize(12)
+      pdf.text(`${label}: ${count}`, 20, yPos)
+      yPos += 15
+    })
+    
+    // Top cities
+    pdf.setFontSize(16)
+    pdf.text('Top 5 villes', 20, yPos + 20)
+    
+    yPos += 35
+    topCities.forEach(([city, count], index) => {
+      pdf.setFontSize(12)
+      pdf.text(`${index + 1}. ${city}: ${count}`, 20, yPos)
+      yPos += 15
+    })
+    
+    pdf.save('rapport-ka-auto-epaves.pdf')
+  }
+
   const statusLabels = {
     pending: "En attente",
     confirmed: "Confirmé",
@@ -109,7 +159,7 @@ export default function AdminStatisticsPage() {
                   variant="outline" 
                   size="sm"
                   className="border-primary/30 hover:bg-primary/10"
-                  onClick={() => window.open('/api/admin/export-pdf', '_blank')}
+                  onClick={exportToPDF}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Export PDF
