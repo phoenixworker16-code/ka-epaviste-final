@@ -33,9 +33,11 @@ export default function AdminLoginPage() {
 
       const data = await response.json()
 
-      if (response.ok && data.success) {
+      if (response.ok && data.success && data.token) {
+        // Stocker le token
+        localStorage.setItem('adminToken', data.token)
         // Redirection vers le dashboard
-        window.location.href = '/admin/dashboard'
+        router.push('/admin/dashboard')
       } else {
         setError(data.error || 'Erreur de connexion')
       }
