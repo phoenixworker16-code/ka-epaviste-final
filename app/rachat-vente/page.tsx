@@ -8,11 +8,11 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Clock, Euro, CheckCircle, Phone, Mail, MapPin, Star, Shield, Zap } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Rachat et Vente de Véhicules - KA Auto Épaves | Centre-Val de Loire",
+  title: "Rachat et Vente de Véhicules - KA Auto Épaves | le Loir-et-Cher",
   description:
-    "Vendez votre voiture cash rapidement ou trouvez votre prochaine bonne affaire. Service de rachat et vente de véhicules d'occasion dans le Centre-Val de Loire.",
+    "Vendez votre voiture cash rapidement ou trouvez votre prochaine bonne affaire. Service de rachat et vente de véhicules d'occasion dans le Loir-et-Cher.",
   keywords:
-    "rachat voiture cash, vendre ma voiture rapidement, reprise véhicule occasion, achat vente auto particulier, trouver bonne affaire voiture, Centre-Val de Loire",
+    "rachat voiture cash, vendre ma voiture rapidement, reprise véhicule occasion, achat vente auto particulier, trouver bonne affaire voiture, Loir-et-Cher",
 }
 
 export default function RachatVentePage() {
@@ -38,7 +38,7 @@ export default function RachatVentePage() {
               Vendez votre voiture cash ou trouvez votre prochaine bonne affaire
             </h1>
             <p className="text-xl text-muted-foreground mb-8 text-pretty">
-              Passionné d'automobile dans le Centre-Val de Loire, je vous propose une solution simple et directe pour
+              Passionné d'automobile dans le Loir-et-Cher, je vous propose une solution simple et directe pour
               vendre votre voiture au juste prix ou pour acheter un véhicule d'occasion sélectionné par mes soins. Pas
               d'intermédiaire, pas de frais cachés, juste une transaction rapide et honnête.
             </p>
@@ -212,10 +212,10 @@ export default function RachatVentePage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8">
-              Zone d'intervention - Centre-Val de Loire
+              Zone d'intervention - le Loir-et-Cher
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Je me déplace dans tous les départements du Centre-Val de Loire pour vos rachats et ventes de véhicules
+              Je me déplace dans le Loir-et-Cher pour vos rachats et ventes de véhicules
             </p>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">

@@ -33,7 +33,7 @@ export default function HomePage() {
                 Enlèvement gratuit d'épaves automobiles
               </h1>
               <p className="text-xl text-muted-foreground text-balance mb-4 max-w-2xl mx-auto">
-                Service professionnel et rapide en Centre-Val de Loire. Nous nous occupons de tout, de l'enlèvement aux
+                Service professionnel et rapide dans le Loir-et-Cher. Nous nous occupons de tout, de l'enlèvement aux
                 démarches administratives.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">

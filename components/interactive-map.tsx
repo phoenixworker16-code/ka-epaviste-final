@@ -32,7 +32,7 @@ export function InteractiveMap({ className }: InteractiveMapProps) {
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            title="Zone d'intervention KA Auto Épaves - Centre-Val de Loire"
+            title="Zone d'intervention KA Auto Épaves - le Loir-et-Cher"
           />
         </div>
 
@@ -51,7 +51,7 @@ export function InteractiveMap({ className }: InteractiveMapProps) {
         <div className="mt-4 p-3 bg-primary/10 rounded-lg">
           <p className="text-sm text-primary">
             <MapPin className="inline h-4 w-4 mr-1" />
-            <strong>Zone de couverture :</strong> Intervention dans tous les départements du Centre-Val de Loire avec des délais d'intervention de 24h à 72h selon la localisation.
+            <strong>Zone de couverture :</strong> Intervention dans le Loir-et-Cher avec des délais d'intervention de 24h à 72h selon la localisation.
           </p>
         </div>
       </CardContent>

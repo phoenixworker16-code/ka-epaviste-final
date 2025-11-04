@@ -16,7 +16,7 @@ export default function AboutPage() {
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold text-balance mb-4">À propos de KA Auto Épaves</h1>
               <p className="text-xl text-muted-foreground text-balance mb-8 max-w-2xl mx-auto">
-                Votre partenaire de confiance pour l'enlèvement d'épaves automobiles en Centre-Val de Loire depuis plus
+                Votre partenaire de confiance pour l'enlèvement d'épaves automobiles dans le Loir-et-Cher depuis plus
                 de 10 ans.
               </p>
             </div>
@@ -33,7 +33,7 @@ export default function AboutPage() {
                   <div className="space-y-4 text-muted-foreground">
                     <p>
                       Fondée en 2014, KA Auto Épaves est née de la volonté de proposer un service d'enlèvement d'épaves
-                      automobiles professionnel et respectueux de l'environnement dans la région Centre-Val de Loire.
+                      automobiles professionnel et respectueux de l'environnement dans le Loir-et-Cher.
                     </p>
                     <p>
                       Fort de notre expérience et de notre engagement écologique, nous avons développé un réseau de

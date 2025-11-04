@@ -16,12 +16,12 @@ export function Footer() {
               />
               <div>
                 <h3 className="text-lg font-bold">KA Auto Épaves</h3>
-                <p className="text-sm text-gray-400">Centre-Val de Loire</p>
+                <p className="text-sm text-gray-400">le Loir-et-Cher</p>
               </div>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Service professionnel d'enlèvement d'épaves automobiles. Intervention rapide et gratuite dans toute la
-              région Centre-Val de Loire.
+              Service professionnel d'enlèvement d'épaves automobiles. Intervention rapide et gratuite dans
+              le Loir-et-Cher.
             </p>
           </div>
 
@@ -76,7 +76,7 @@ export function Footer() {
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin className="h-4 w-4 text-primary mt-0.5" />
-                <span className="text-gray-300">Centre-Val de Loire</span>
+                <span className="text-gray-300">le Loir-et-Cher</span>
               </li>
             </ul>
           </div>

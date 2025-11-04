@@ -6,7 +6,7 @@ import { Shield, FileText, Phone, Mail } from "lucide-react"
 export const metadata = {
   title: "Mentions légales",
   description:
-    "Mentions légales et informations juridiques de KA Auto Épaves, service d'enlèvement d'épaves automobiles en Centre-Val de Loire.",
+    "Mentions légales et informations juridiques de KA Auto Épaves, service d'enlèvement d'épaves automobiles dans le Loir-et-Cher.",
 }
 
 export default function MentionsLegalesPage() {
@@ -42,7 +42,7 @@ export default function MentionsLegalesPage() {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-2">Siège social</h3>
-                      <p>Centre-Val de Loire, France</p>
+                      <p>le Loir-et-Cher, France</p>
                     </div>
                     <div>
                       <h3 className="font-semibold mb-2">SIRET</h3>

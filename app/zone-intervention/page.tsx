@@ -28,7 +28,7 @@ export default function ZoneInterventionPage() {
             <div className="max-w-4xl mx-auto text-center">
               <h1 className="text-4xl md:text-5xl font-bold text-balance mb-6 animate-in slide-in-from-top-5 delay-200">Zone d'intervention</h1>
               <p className="text-xl text-muted-foreground text-balance mb-8 max-w-2xl mx-auto">
-                Nous intervenons dans toute la région Centre-Val de Loire pour l'enlèvement gratuit de vos épaves
+                Nous intervenons dans le Loir-et-Cher pour l'enlèvement gratuit de vos épaves
                 automobiles.
               </p>
               <Button size="lg" asChild>
@@ -57,7 +57,7 @@ export default function ZoneInterventionPage() {
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold mb-4">Départements couverts</h2>
                 <p className="text-muted-foreground">
-                  Nous intervenons dans les 6 départements de la région Centre-Val de Loire
+                  Nous intervenons dans le Loir-et-Cher
                 </p>
               </div>
 

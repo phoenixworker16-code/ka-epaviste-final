@@ -21,7 +21,7 @@ export function Header() {
             />
             <div>
               <h1 className="text-xl font-bold text-foreground">KA Auto Épaves</h1>
-              <p className="text-xs text-muted-foreground">Centre-Val de Loire</p>
+              <p className="text-xs text-muted-foreground">le Loir-et-Cher</p>
             </div>
           </Link>
 

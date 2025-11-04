@@ -8,15 +8,15 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: {
-    default: "KA Auto Épaves - Enlèvement gratuit d'épaves automobiles en Centre-Val de Loire",
+    default: "KA Auto Épaves - Enlèvement gratuit d'épaves automobiles dans le Loir-et-Cher",
     template: "%s | KA Auto Épaves",
   },
   description:
-    "Service professionnel d'enlèvement d'épaves automobiles en Centre-Val de Loire. Intervention rapide et gratuite dans tous les départements. Démarches administratives incluses.",
+    "Service professionnel d'enlèvement d'épaves automobiles dans le Loir-et-Cher. Intervention rapide et gratuite. Démarches administratives incluses.",
   keywords: [
     "épaves automobiles",
     "enlèvement gratuit",
-    "Centre-Val de Loire",
+    "Loir-et-Cher",
     "dépannage auto",
     "véhicule hors usage",
     "VHU",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     siteName: "KA Auto Épaves",
     title: "KA Auto Épaves - Enlèvement gratuit d'épaves automobiles",
     description:
-      "Service professionnel d'enlèvement d'épaves automobiles en Centre-Val de Loire. Intervention rapide et gratuite.",
+      "Service professionnel d'enlèvement d'épaves automobiles dans le Loir-et-Cher. Intervention rapide et gratuite.",
     images: [
       {
         url: "/og-image.jpg",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "KA Auto Épaves - Enlèvement gratuit d'épaves automobiles",
-    description: "Service professionnel d'enlèvement d'épaves automobiles en Centre-Val de Loire.",
+    description: "Service professionnel d'enlèvement d'épaves automobiles dans le Loir-et-Cher.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -89,13 +89,13 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: "KA Auto Épaves",
-  description: "Service professionnel d'enlèvement d'épaves automobiles en Centre-Val de Loire",
+  description: "Service professionnel d'enlèvement d'épaves automobiles dans le Loir-et-Cher",
   url: "https://ka-epaviste-final.vercel.app",
   telephone: "+33 6 63 83 03 03",
   email: "contact@ka-autoepaves.fr",
   areaServed: {
     "@type": "State",
-    name: "Centre-Val de Loire",
+    name: "Loir-et-Cher",
     containsPlace: [
       { "@type": "City", name: "Bourges" },
       { "@type": "City", name: "Chartres" },

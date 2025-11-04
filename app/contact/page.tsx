@@ -148,10 +148,7 @@ export default function ContactPage() {
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-lg font-semibold">Centre-Val de Loire</p>
-                        <p className="text-sm text-muted-foreground mt-1">
-                          Cher, Eure-et-Loir, Indre, Indre-et-Loire, Loir-et-Cher, Loiret
-                        </p>
+                        <p className="text-lg font-semibold">le Loir-et-Cher</p>
                       </CardContent>
                     </Card>
 
@@ -354,7 +351,7 @@ export default function ContactPage() {
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-muted-foreground">
-                      Nous couvrons toute la région Centre-Val de Loire. Contactez-nous pour vérifier si votre zone est
+                      Nous couvrons le Loir-et-Cher. Contactez-nous pour vérifier si votre zone est
                       desservie.
                     </p>
                   </CardContent>
