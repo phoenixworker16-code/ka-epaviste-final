@@ -51,9 +51,19 @@ export default function AdminDashboardPage() {
   const fetchDashboardData = async () => {
     setIsLoading(true)
     try {
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        window.location.href = '/admin/login'
+        return
+      }
+      
       const [requestsRes, messagesRes] = await Promise.all([
-        fetch('/api/admin/requests'),
-        fetch('/api/admin/messages')
+        fetch('/api/admin/requests', {
+          headers: { Authorization: `Bearer ${token}` }
+        }),
+        fetch('/api/admin/messages', {
+          headers: { Authorization: `Bearer ${token}` }
+        })
       ])
       
       if (requestsRes.ok && messagesRes.ok) {
@@ -71,6 +81,8 @@ export default function AdminDashboardPage() {
           recentRequests: requests.slice(0, 5),
           recentMessages: messages.slice(0, 3)
         })
+      } else if (requestsRes.status === 401 || messagesRes.status === 401) {
+        window.location.href = '/admin/login'
       }
     } catch (error) {
       console.error('Error fetching dashboard data:', error)

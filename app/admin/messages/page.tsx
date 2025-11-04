@@ -37,10 +37,21 @@ export default function AdminMessagesPage() {
   const fetchMessages = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/admin/messages')
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        window.location.href = '/admin/login'
+        return
+      }
+      
+      const response = await fetch('/api/admin/messages', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      
       if (response.ok) {
         const data = await response.json()
         setMessages(data.messages || [])
+      } else if (response.status === 401) {
+        window.location.href = '/admin/login'
       }
     } catch (error) {
       console.error("Error fetching messages:", error)
@@ -51,9 +62,18 @@ export default function AdminMessagesPage() {
   const updateMessageStatus = async (messageId: string, status: string, adminNotes?: string) => {
     setIsUpdating(true)
     try {
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        window.location.href = '/admin/login'
+        return
+      }
+      
       const response = await fetch('/api/admin/messages', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ id: messageId, status, admin_notes: adminNotes })
       })
       
