@@ -86,23 +86,93 @@ export default function AdminDashboardPage() {
   const exportToPDF = () => {
     const pdf = new jsPDF()
     
-    pdf.setFontSize(20)
+    // Header avec fond orange
+    pdf.setFillColor(255, 102, 0)
+    pdf.rect(0, 0, 210, 40, 'F')
+    
+    // Logo (simulé avec un carré orange foncé)
+    pdf.setFillColor(204, 82, 0)
+    pdf.rect(15, 10, 20, 20, 'F')
+    pdf.setTextColor(255, 255, 255)
+    pdf.setFontSize(14)
+    pdf.text('KA', 22, 23)
+    
+    // Nom entreprise centré
+    pdf.setTextColor(255, 255, 255)
+    pdf.setFontSize(22)
+    pdf.text('KA AUTO ÉPAVES', 105, 20, { align: 'center' })
+    pdf.setFontSize(12)
+    pdf.text('Service d\'enlèvement d\'épaves - le Loir-et-Cher', 105, 30, { align: 'center' })
+    
+    // Ligne de séparation
+    pdf.setDrawColor(255, 102, 0)
+    pdf.setLineWidth(2)
+    pdf.line(20, 50, 190, 50)
+    
+    // Titre du rapport
     pdf.setTextColor(255, 102, 0)
-    pdf.text('KA Auto Épaves - Rapport d\'activité', 20, 30)
+    pdf.setFontSize(18)
+    pdf.text('RAPPORT D\'ACTIVITÉ', 105, 65, { align: 'center' })
     
-    pdf.setFontSize(12)
     pdf.setTextColor(0, 0, 0)
-    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 20, 45)
-    pdf.text('le Loir-et-Cher', 20, 55)
+    pdf.setFontSize(10)
+    pdf.text(`Généré le ${new Date().toLocaleDateString('fr-FR')}`, 105, 75, { align: 'center' })
     
-    pdf.setFontSize(16)
-    pdf.text('Statistiques', 20, 75)
+    // Statistiques avec encadrés
+    let yPos = 90
+    pdf.setFillColor(255, 102, 0)
+    pdf.rect(20, yPos, 170, 8, 'F')
+    pdf.setTextColor(255, 255, 255)
+    pdf.setFontSize(14)
+    pdf.text('STATISTIQUES PRINCIPALES', 105, yPos + 6, { align: 'center' })
     
+    yPos += 20
+    pdf.setTextColor(0, 0, 0)
     pdf.setFontSize(12)
-    pdf.text(`Total demandes: ${stats.totalRequests}`, 20, 90)
-    pdf.text(`En attente: ${stats.pendingRequests}`, 20, 105)
-    pdf.text(`Terminées: ${stats.completedRequests}`, 20, 120)
-    pdf.text(`Messages: ${stats.totalMessages}`, 20, 135)
+    
+    // Encadrés pour les stats
+    const statsData = [
+      [`Total demandes: ${stats.totalRequests}`, `En attente: ${stats.pendingRequests}`],
+      [`Terminées: ${stats.completedRequests}`, `Messages: ${stats.totalMessages}`]
+    ]
+    
+    statsData.forEach(([left, right]) => {
+      pdf.setDrawColor(255, 102, 0)
+      pdf.rect(20, yPos, 80, 15)
+      pdf.rect(110, yPos, 80, 15)
+      pdf.text(left, 25, yPos + 10)
+      pdf.text(right, 115, yPos + 10)
+      yPos += 20
+    })
+    
+    // Demandes récentes
+    yPos += 10
+    pdf.setFillColor(255, 102, 0)
+    pdf.rect(20, yPos, 170, 8, 'F')
+    pdf.setTextColor(255, 255, 255)
+    pdf.setFontSize(14)
+    pdf.text('DERNIÈRES DEMANDES', 105, yPos + 6, { align: 'center' })
+    
+    yPos += 20
+    pdf.setTextColor(0, 0, 0)
+    pdf.setFontSize(10)
+    stats.recentRequests.slice(0, 5).forEach((request) => {
+      pdf.setDrawColor(255, 102, 0)
+      pdf.rect(20, yPos, 170, 12)
+      pdf.text(`${request.first_name} ${request.last_name} - ${request.vehicle_brand} ${request.vehicle_model}`, 25, yPos + 8)
+      yPos += 15
+    })
+    
+    // Footer
+    pdf.setFillColor(255, 102, 0)
+    pdf.rect(0, 270, 210, 27, 'F')
+    
+    pdf.setTextColor(255, 255, 255)
+    pdf.setFontSize(12)
+    pdf.text('KA AUTO ÉPAVES', 105, 280, { align: 'center' })
+    pdf.setFontSize(10)
+    pdf.text('📞 +33 6 63 83 03 03  |  📧 contact@ka-autoepaves.fr', 105, 287, { align: 'center' })
+    pdf.text('📍 le Loir-et-Cher, France', 105, 294, { align: 'center' })
     
     pdf.save('rapport-ka-auto-epaves.pdf')
   }
