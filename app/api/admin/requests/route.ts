@@ -41,7 +41,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
     }
     
-    const { id, status, admin_notes } = await request.json()
+    const { id, status } = await request.json()
     
     if (!id) {
       return NextResponse.json(
@@ -50,20 +50,10 @@ export async function PUT(request: NextRequest) {
       )
     }
     
-    if (status && admin_notes !== undefined) {
-      await pool.query(
-        'UPDATE removal_requests SET status = $1, admin_notes = $2 WHERE id = $3',
-        [status, admin_notes, id]
-      )
-    } else if (status) {
+    if (status) {
       await pool.query(
         'UPDATE removal_requests SET status = $1 WHERE id = $2',
         [status, id]
-      )
-    } else if (admin_notes !== undefined) {
-      await pool.query(
-        'UPDATE removal_requests SET admin_notes = $1 WHERE id = $2',
-        [admin_notes, id]
       )
     }
     

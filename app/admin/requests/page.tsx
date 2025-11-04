@@ -134,9 +134,9 @@ export default function AdminRequestsPage() {
     setFilteredRequests(filtered)
   }
 
-  const updateRequestStatus = async (requestId: string, status: string, adminNotes?: string) => {
+  const updateRequestStatus = async (requestId: string, status: string) => {
     setIsUpdating(true)
-    console.log('Updating status:', { requestId, status, adminNotes })
+    console.log('Updating status:', { requestId, status })
     
     try {
       const token = localStorage.getItem('adminToken')
@@ -151,7 +151,7 @@ export default function AdminRequestsPage() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ id: requestId, status, admin_notes: adminNotes })
+        body: JSON.stringify({ id: requestId, status })
       })
       
       if (response.ok) {
@@ -473,8 +473,7 @@ export default function AdminRequestsPage() {
                                             setSelectedRequest({ ...selectedRequest, status: value })
                                             updateRequestStatus(
                                               selectedRequest.id,
-                                              value,
-                                              selectedRequest.admin_notes || ""
+                                              value
                                             )
                                           }}
                                           disabled={isUpdating}
@@ -508,8 +507,7 @@ export default function AdminRequestsPage() {
                                           onClick={() =>
                                             updateRequestStatus(
                                               selectedRequest.id,
-                                              selectedRequest.status,
-                                              selectedRequest.admin_notes || "",
+                                              selectedRequest.status
                                             )
                                           }
                                           disabled={isUpdating}
