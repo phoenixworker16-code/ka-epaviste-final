@@ -158,7 +158,7 @@ export default function AdminRequestsPage() {
         console.log('Status updated successfully')
         await fetchRequests()
         if (selectedRequest?.id === requestId) {
-          setSelectedRequest({ ...selectedRequest, status, admin_notes: adminNotes || selectedRequest.admin_notes })
+          setSelectedRequest({ ...selectedRequest, status })
         }
       } else {
         console.error('Failed to update status:', await response.text())
