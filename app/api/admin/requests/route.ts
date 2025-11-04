@@ -50,29 +50,21 @@ export async function PUT(request: NextRequest) {
       )
     }
     
-    const updates = ['updated_at = NOW()']
-    const values = []
-    let paramCount = 0
-    
-    if (status) {
-      updates.push(`status = $${++paramCount}`)
-      values.push(status)
-    }
-    
-    if (admin_notes !== undefined) {
-      updates.push(`admin_notes = $${++paramCount}`)
-      values.push(admin_notes)
-    }
-    
-    values.push(id)
-    const query = `UPDATE removal_requests SET ${updates.join(', ')} WHERE id = $${++paramCount}`
-    
-    console.log('Updating request:', { id, status, admin_notes, query, values })
-    
-    const result = await pool.query(query, values)
-    
-    if (result.rowCount === 0) {
-      return NextResponse.json({ error: 'Demande non trouvée' }, { status: 404 })
+    if (status && admin_notes !== undefined) {
+      await pool.query(
+        'UPDATE removal_requests SET status = $1, admin_notes = $2 WHERE id = $3',
+        [status, admin_notes, id]
+      )
+    } else if (status) {
+      await pool.query(
+        'UPDATE removal_requests SET status = $1 WHERE id = $2',
+        [status, id]
+      )
+    } else if (admin_notes !== undefined) {
+      await pool.query(
+        'UPDATE removal_requests SET admin_notes = $1 WHERE id = $2',
+        [admin_notes, id]
+      )
     }
     
     return NextResponse.json({ success: true })
