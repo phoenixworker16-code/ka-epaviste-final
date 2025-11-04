@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Pool } from 'pg'
 import { requireAdmin } from '@/lib/admin-auth'
+import puppeteer from 'puppeteer'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -88,16 +89,22 @@ export async function GET() {
       </table>
       
       <div style="text-align: center; margin-top: 30px; color: #666;">
-        <p>KA Auto Épaves - Centre-Val de Loire</p>
+        <p>KA Auto Épaves - le Loir-et-Cher</p>
       </div>
     </body>
     </html>
     `
     
-    return new NextResponse(html, {
+    const browser = await puppeteer.launch({ headless: true })
+    const page = await browser.newPage()
+    await page.setContent(html)
+    const pdf = await page.pdf({ format: 'A4', printBackground: true })
+    await browser.close()
+    
+    return new NextResponse(pdf, {
       headers: {
-        'Content-Type': 'text/html',
-        'Content-Disposition': 'attachment; filename="rapport-ka-auto-epaves.html"'
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename="rapport-ka-auto-epaves.pdf"'
       }
     })
     

@@ -131,7 +131,7 @@ export default function ContactPage() {
                         </div>
                       </CardHeader>
                       <CardContent>
-                        <p className="text-lg font-semibold">contact@ka-auto-epaves.fr</p>
+                        <p className="text-lg font-semibold">contact@ka-autoepaves.fr</p>
                       </CardContent>
                     </Card>
 

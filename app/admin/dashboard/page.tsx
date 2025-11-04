@@ -318,7 +318,7 @@ export default function AdminDashboardPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Button className="bg-primary hover:bg-primary/90" asChild>
                 <a href="/admin/requests">
                   <Car className="mr-2 h-4 w-4" />
@@ -329,12 +329,6 @@ export default function AdminDashboardPage() {
                 <a href="/admin/messages">
                   <MessageCircle className="mr-2 h-4 w-4" />
                   Gérer les messages
-                </a>
-              </Button>
-              <Button variant="outline" className="border-primary/30 hover:bg-primary/10" asChild>
-                <a href="/admin/profile">
-                  <Users className="mr-2 h-4 w-4" />
-                  Mon profil
                 </a>
               </Button>
             </div>

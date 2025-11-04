@@ -127,7 +127,7 @@ export default function AdminStatisticsPage() {
               <Car className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{totalRequests || 0}</div>
+              <div className="text-2xl font-bold">{stats.totalRequests || 0}</div>
               <p className="text-xs text-muted-foreground">Depuis le début</p>
             </CardContent>
           </Card>
@@ -138,10 +138,10 @@ export default function AdminStatisticsPage() {
               <Calendar className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{thisMonthRequests || 0}</div>
+              <div className="text-2xl font-bold">{stats.thisMonthRequests || 0}</div>
               <p className="text-xs text-muted-foreground">
-                {monthlyGrowth > 0 ? "+" : ""}
-                {monthlyGrowth}% vs mois dernier
+                {stats.monthlyGrowth > 0 ? "+" : ""}
+                {stats.monthlyGrowth}% vs mois dernier
               </p>
             </CardContent>
           </Card>
@@ -152,7 +152,7 @@ export default function AdminStatisticsPage() {
               <TrendingUp className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{recentRequests || 0}</div>
+              <div className="text-2xl font-bold">{stats.recentRequests || 0}</div>
               <p className="text-xs text-muted-foreground">Activité récente</p>
             </CardContent>
           </Card>
@@ -164,8 +164,8 @@ export default function AdminStatisticsPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-                {totalRequests
-                  ? Math.round(((requestsByStatus?.completed || 0) / totalRequests) * 100)
+                {stats.totalRequests
+                  ? Math.round(((stats.requestsByStatus?.completed || 0) / stats.totalRequests) * 100)
                   : 0}
                 %
               </div>
@@ -186,7 +186,7 @@ export default function AdminStatisticsPage() {
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                {Object.entries(requestsByStatus || {}).map(([status, count]) => (
+                {Object.entries(stats.requestsByStatus || {}).map(([status, count]) => (
                   <div key={status} className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
                       <div
@@ -205,7 +205,7 @@ export default function AdminStatisticsPage() {
                     <div className="flex items-center space-x-2">
                       <span className="text-sm font-medium">{count as number}</span>
                       <span className="text-xs text-muted-foreground">
-                        ({totalRequests ? Math.round(((count as number) / totalRequests) * 100) : 0}%)
+                        ({stats.totalRequests ? Math.round(((count as number) / stats.totalRequests) * 100) : 0}%)
                       </span>
                     </div>
                   </div>
@@ -239,7 +239,7 @@ export default function AdminStatisticsPage() {
                         <div
                           className="bg-primary h-2 rounded-full"
                           style={{
-                            width: `${totalRequests ? ((count as number) / totalRequests) * 100 : 0}%`,
+                            width: `${stats.totalRequests ? ((count as number) / stats.totalRequests) * 100 : 0}%`,
                           }}
                         />
                       </div>
@@ -267,7 +267,7 @@ export default function AdminStatisticsPage() {
                   <div className="text-2xl font-bold text-primary mb-1">{count as number}</div>
                   <div className="text-sm font-medium mb-1">{brand}</div>
                   <div className="text-xs text-muted-foreground">
-                    {totalRequests ? Math.round(((count as number) / totalRequests) * 100) : 0}%
+                    {stats.totalRequests ? Math.round(((count as number) / stats.totalRequests) * 100) : 0}%
                   </div>
                 </div>
               ))}
