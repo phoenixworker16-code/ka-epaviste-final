@@ -107,8 +107,14 @@ export default function AdminMessagesPage() {
 
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Messages de contact</h1>
-          <p className="text-muted-foreground">Gérez tous les messages reçus via le formulaire de contact</p>
+          <div className="bg-gradient-to-r from-primary/10 to-primary/5 p-6 rounded-lg border border-primary/20">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-3xl font-bold mb-2 text-primary">Messages de contact</h1>
+                <p className="text-muted-foreground">Gérez tous les messages reçus via le formulaire de contact</p>
+              </div>
+            </div>
+          </div>
         </div>
 
         <Card>
