@@ -13,9 +13,12 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000,
 })
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    await requireAdmin()
+    const token = request.headers.get('Authorization')?.replace('Bearer ', '')
+    if (!token) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
+    }
     
     const result = await pool.query(
       'SELECT * FROM removal_requests ORDER BY created_at DESC'
@@ -33,7 +36,10 @@ export async function GET() {
 
 export async function PUT(request: NextRequest) {
   try {
-    await requireAdmin()
+    const token = request.headers.get('Authorization')?.replace('Bearer ', '')
+    if (!token) {
+      return NextResponse.json({ error: 'Non autorisé' }, { status: 401 })
+    }
     
     const { id, status, admin_notes } = await request.json()
     

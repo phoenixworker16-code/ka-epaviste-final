@@ -90,10 +90,21 @@ export default function AdminRequestsPage() {
   const fetchRequests = async () => {
     setIsLoading(true)
     try {
-      const response = await fetch('/api/admin/requests')
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        window.location.href = '/admin/login'
+        return
+      }
+      
+      const response = await fetch('/api/admin/requests', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      
       if (response.ok) {
         const data = await response.json()
         setRequests(data.requests || [])
+      } else if (response.status === 401) {
+        window.location.href = '/admin/login'
       }
     } catch (error) {
       console.error("Error fetching requests:", error)
@@ -128,9 +139,18 @@ export default function AdminRequestsPage() {
     console.log('Updating status:', { requestId, status, adminNotes })
     
     try {
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        window.location.href = '/admin/login'
+        return
+      }
+      
       const response = await fetch('/api/admin/requests', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ id: requestId, status, admin_notes: adminNotes })
       })
       
